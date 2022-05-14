@@ -1,0 +1,30 @@
+body
+{
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+p
+{
+    text-align: center;
+    color: white;
+    font-family: 'Arimo';
+    font-size: 120%;
+}
+
+a
+{
+    color: aqua;
+    font-family: 'Montserrat-ExtraLight';
+    /*text-decoration: underline;*/
+}
+
+.center
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
