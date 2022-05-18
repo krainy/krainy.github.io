@@ -1,5 +1,5 @@
 body {
-    background-color: #252525;
+    background-color: #353535;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -12,6 +12,8 @@ body {
   }
   
   p {
+    margin: auto;
+    padding: 10px;
     color: white;
     font-family: "Arimo";
     font-size: 90%;
@@ -27,7 +29,7 @@ body {
     top: 0px;
     z-index: 999;
     padding: 5px;
-    background-color: #090707;
+    background-color: #141414;
   }
   
   .container {
@@ -58,13 +60,17 @@ body {
     display: flex;
     position: relative;
     padding-left: 50px;
+    color: #ffffff;
+    font-family: "Arial";
+    text-decoration: none;
+    font-size: 150%;
   }
   
   li {
     display: inline;
   }
   
-  a {
+  a.link {
     color: #ffffff;
     font-family: "Arial";
     text-decoration: none;
