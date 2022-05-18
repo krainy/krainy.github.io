@@ -1,7 +1,7 @@
 body {
     background-color: #353535;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     width: 100%;
     height: 100%;
   }
@@ -19,12 +19,18 @@ body {
     font-size: 90%;
   }
   
-  .center {
-    margin-left: auto;
-    margin-right: auto;
+  a {
+    color: #ffffff;
+    font-family: "Arial";
+    text-decoration: none;
   }
   
-  .topo {
+  /*.center {
+    margin-left: auto;
+    margin-right: auto;
+  }*/
+  
+  header {
     position: sticky;
     top: 0px;
     z-index: 999;
@@ -71,22 +77,19 @@ body {
   }
   
   a.link {
-    color: #ffffff;
-    font-family: "Arial";
-    text-decoration: none;
     font-size: 150%;
     margin-right: 10px;
   }
   
-  .contacts {
+  footer {
     background-color: #202020;
     text-align: center;
   }
   
-  a.link_contato {
-    color: #ffffff;
-    font-family: "Arial";
-    text-decoration: none;
+  ul.link_contato {
     font-size: 95%;
+    margin: 0;
+    padding: 0;
+    bottom: 0px;
   }
   
