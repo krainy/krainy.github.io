@@ -105,6 +105,8 @@ ul.link_contato {
   margin: 0;
   padding: 0;
   padding-bottom: 5px;
+  text-align: center;
+  vertical-align: baseline;
 }
 
 @media screen and (max-width: 800px) {
