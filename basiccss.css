@@ -1,4 +1,7 @@
-
+@font-face {
+  font-family: alagard;
+  src: url(alagard.ttf);
+}
 
 body {
   position: relative;
