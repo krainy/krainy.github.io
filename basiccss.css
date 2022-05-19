@@ -106,7 +106,10 @@ ul.link_contato {
   padding: 0;
   padding-bottom: 5px;
   text-align: center;
-  vertical-align: baseline;
+}
+
+.ttpng {
+  vertical-align: text-bottom;
 }
 
 @media screen and (max-width: 800px) {
