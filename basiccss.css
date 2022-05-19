@@ -27,9 +27,9 @@ a {
 }
 
 /*.center {
-  margin-left: auto;
-  margin-right: auto;
-}*/
+    margin-left: auto;
+    margin-right: auto;
+  }*/
 
 header {
   position: sticky;
@@ -82,11 +82,12 @@ a.link {
 }
 
 .p_cont {
-	font-size: 100%;
+  font-size: 100%;
 }
 
 footer {
-  position: static;
+  position: absolute;
+  bottom: 0;
   width: 100vw;
   height: auto;
   background-color: #202020;
@@ -94,7 +95,7 @@ footer {
 }
 
 ul.link_contato {
-  font-size: 150%;
+  font-size: 100%;
   margin: 0;
   padding: 0;
   padding-bottom: 0.5vw;
@@ -102,46 +103,46 @@ ul.link_contato {
 
 @media screen and (max-width: 800px) {
   .logo {
-  	font-size: 4.5vw;
+    font-size: 4.5vw;
   }
-  
+
   a.link {
     font-size: 4vw;
   }
-  
+
   p {
-  font-size: 3vw;
+    font-size: 3vw;
   }
-  
+
   .p_cont {
-  font-size: 3.5vw;
+    font-size: 3.5vw;
   }
-  
+
   ul.link_contato {
-  font-size: 2.75vw;
+    font-size: 2.75vw;
   }
-  
+
 }
 
 @media screen and (min-width: 1000px) {
-header {
-  padding: 5px;
-}
+  header {
+    padding: 5px;
+  }
 
-.navbar {
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
+  .navbar {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
 
-.logo {
-padding-left: 50px;
-}
+  .logo {
+    padding-left: 50px;
+  }
 
-.links {
-padding-right: 50px;
-}
+  .links {
+    padding-right: 50px;
+  }
 
-a.link {
-  margin-right: 10px;
-}
+  a.link {
+    margin-right: 10px;
+  }
 }
