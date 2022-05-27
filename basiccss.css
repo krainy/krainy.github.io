@@ -1,59 +1,41 @@
-body
-{
+@font-face {
+    font-family: alagard;
+    src: url(alagard.ttf);
+}
+
+body {
     background-color: black;
+    position: relative;
     margin: 0;
     padding: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+html {
     width: 100%;
     height: 100%;
 }
 
-html
-{
-    width: 100%;
-    height: 100%;
-}
-
-h1
-{
+h1 {
     text-align: center;
     color: red;
-    font-family: 'Montserrat-Regular';
+    font-family: alagard;
     font-size: 300%;
 }
 
-h2
-{
-    text-align: center;
-    color: rgb(195, 195, 195);
-    font-family: 'Montserrat-ExtraLight';
-    font-size: 24px;
-    margin-bottom: 50px;
-}
-
-p
-{
+p {
     text-align: center;
     color: white;
-    font-family: 'Arimo';
+    font-family: alagard;
     font-size: 90%;
 }
 
-.bigP
-{
-    font-size: 140%;
-    margin-bottom: 1%;
-}
-
-a
-{
-    color: aqua;
-    font-family: 'Montserrat-ExtraLight';
-    /*text-decoration: underline;*/
-}
-
-.center
-{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+a.credit {
+    position: absolute;
+    bottom: 0px;
+    color: white;
+    font-family: alagard;
+    font: 90%;
+    text-decoration: none;
 }
