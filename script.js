@@ -2,6 +2,7 @@ const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
 var tiro = 0;
+var canShot = true;
 
 function resizeGameDiv() {
     var gameDiv = document.getElementById("game-div");
@@ -131,10 +132,11 @@ class Meteor {
             this.position.y += velocity.y;
 
             if (this.position.y - this.image.height > canvas.height) {
+                const rngPos = Math.floor(Math.random() * 10);
                 const rngY = Math.floor(Math.random() * 100);
-                const rngX = Math.floor(Math.random() * (canvas.width));
+                const rngX = Math.floor(Math.random() * (canvas.width / 5));
                 this.position.y = 0 - this.image.height - rngY;
-                this.position.x = (canvas.width / 5) + rngX;
+                this.position.x = (rngPos * (canvas.width / 5)) + rngX;
 
 
 
@@ -159,10 +161,10 @@ class Grid {
         this.meteors = []
 
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < Math.floor(canvas.width / 50); i++) {
             const rngY = Math.floor(Math.random() * 1000);
             const rngX = Math.floor(Math.random() * (canvas.width / 5));
-            const xPos = (i * (canvas.width / 5)) + rngX;
+            const xPos = (i * (canvas.width / 5)) + rngX; //ainda vou usar isso aqui.
 
 
 
@@ -212,14 +214,11 @@ function animate() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     player.update();
-    projectiles.forEach((projectiles, index) => {
-        if (projectiles.position.y + projectiles.radius <= 0) {
-            setTimeout(() => {
-                projectiles.splice(index, 1)
-            }, 0)
-
+    projectiles.forEach((projectile, index) => {
+        if (projectile.position.y + projectile.radius <= 0) {
+            projectiles.splice(index, 1);
         } else {
-            projectiles.update();
+            projectile.update();
         }
     })
 
@@ -269,32 +268,35 @@ window.addEventListener('keydown', (e) => {
             keys.ArrowDown.pressed = true;
             break;
         case 'Control':
-            if (tiro == 0) {
-                projectiles.push(new Projectile({
-                    position: {
-                        x: player.position.x + 10,
-                        y: player.position.y
-                    },
-                    velocity: {
-                        x: 0,
-                        y: -15
-                    }
-                }))
+            if (canShot) {
+                if (tiro == 0) {
+                    projectiles.push(new Projectile({
+                        position: {
+                            x: player.position.x + 10,
+                            y: player.position.y
+                        },
+                        velocity: {
+                            x: 0,
+                            y: -15
+                        }
+                    }))
 
-                tiro += 1;
-            } else {
-                projectiles.push(new Projectile({
-                    position: {
-                        x: player.position.x + player.width - 12,
-                        y: player.position.y
-                    },
-                    velocity: {
-                        x: 0,
-                        y: -15
-                    }
-                }))
+                    tiro += 1;
+                } else {
+                    projectiles.push(new Projectile({
+                        position: {
+                            x: player.position.x + player.width - 12,
+                            y: player.position.y
+                        },
+                        velocity: {
+                            x: 0,
+                            y: -15
+                        }
+                    }))
 
-                tiro = 0;
+                    tiro = 0;
+                }
+                canShot = false;
             }
             break;
     }
@@ -313,6 +315,10 @@ window.addEventListener('keyup', (e) => {
             break;
         case 'ArrowDown':
             keys.ArrowDown.pressed = false;
+            break;
+        case 'Control':
+            canShot = true;
+
             break;
     }
 })
