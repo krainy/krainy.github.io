@@ -129,17 +129,18 @@ class Meteor {
             this.draw();
             this.position.x += velocity.x;
             this.position.y += velocity.y;
+
+            if (this.position.y - this.image.height > canvas.height) {
+                const rngY = Math.floor(Math.random() * 100);
+                const rngX = Math.floor(Math.random() * (canvas.width));
+                this.position.y = 0 - this.image.height - rngY;
+                this.position.x = (canvas.width / 5) + rngX;
+
+
+
+            }
         }
 
-        if (this.position.y - this.image.height > canvas.height) {
-            const rngY = Math.floor(Math.random() * 100);
-            const rngX = Math.floor(Math.random() * (canvas.width));
-            this.position.y = 0 - this.image.height - rngY;
-            this.position.x = (canvas.width / 5) + rngX;
-
-
-
-        }
     }
 }
 
