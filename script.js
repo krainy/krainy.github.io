@@ -105,7 +105,7 @@ class Meteor {
         }
 
         const image = new Image();
-        image.src = './img/swarminho.png'
+        image.src = './img/SWARMINHO.png'
 
         image.onload = () => {
             this.image = image;
