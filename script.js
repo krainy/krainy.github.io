@@ -68,7 +68,6 @@ class Player {
         if (this.image) {
             this.draw();
             this.position.x += this.velocity.x;
-            this.position.y += this.velocity.y;
         }
     }
 }
@@ -97,8 +96,98 @@ class Projectile {
     }
 }
 
+class Meteor {
+    constructor({ position }) {
+
+        this.velocity = {
+            x: 0,
+            y: 0
+        }
+
+        const image = new Image();
+        image.src = './img/swarminho.png'
+
+        image.onload = () => {
+            this.image = image;
+            this.width = image.width;
+            this.height = image.height;
+            this.position = {
+                x: position.x,
+                y: position.y
+            }
+        }
+    }
+
+    draw() {
+
+        ctx.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+
+    }
+
+    update({ velocity }) {
+        if (this.image) {
+            this.draw();
+            this.position.x += velocity.x;
+            this.position.y += velocity.y;
+        }
+
+        if (this.position.y - this.image.height > canvas.height) {
+            const rngY = Math.floor(Math.random() * 100);
+            const rngX = Math.floor(Math.random() * (canvas.width));
+            this.position.y = 0 - this.image.height - rngY;
+            this.position.x = (canvas.width / 5) + rngX;
+
+
+
+        }
+    }
+}
+
+class Grid {
+    constructor() {
+        this.position = {
+            x: 0,
+            y: 0
+        }
+
+        this.velocity = {
+            x: 0,
+            y: 5
+        }
+
+        this.meteors = []
+
+
+        for (let i = 0; i < 5; i++) {
+            const rngY = Math.floor(Math.random() * 1000);
+            const rngX = Math.floor(Math.random() * (canvas.width / 5));
+            const xPos = (i * (canvas.width / 5)) + rngX;
+
+
+
+            this.meteors.push(
+                new Meteor({
+                    position: {
+                        x: (i * (canvas.width / 5)) + rngX,
+                        y: 0 - rngY
+                    }
+                }))
+
+        }
+        console.log(this.meteors)
+    }
+
+
+
+    update() {
+        this.position.y += this.velocity.y;
+    }
+}
+
 const player = new Player();
-const projectiles = []
+const projectiles = [];
+const grids = [new Grid()];
+
 const keys = {
     ArrowUp: {
         pressed: false
@@ -122,9 +211,25 @@ function animate() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     player.update();
-    projectiles.forEach(projectiles => {
-        projectiles.update();
+    projectiles.forEach((projectiles, index) => {
+        if (projectiles.position.y + projectiles.radius <= 0) {
+            setTimeout(() => {
+                projectiles.splice(index, 1)
+            }, 0)
+
+        } else {
+            projectiles.update();
+        }
     })
+
+    grids.forEach((grid) => {
+        grid.update();
+        grid.meteors.forEach((meteors, index) => {
+
+            meteors.update({ velocity: grid.velocity });
+        })
+    })
+
 
     if (keys.ArrowUp.pressed && player.position.y >= 0) {
         player.velocity.y = -3;
