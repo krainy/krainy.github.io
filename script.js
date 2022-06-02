@@ -4,6 +4,9 @@ const ctx = canvas.getContext('2d');
 var tiro = 0;
 var canShot = true;
 
+const meteorImage = new Image();
+meteorImage.src = './img/Asteroids.png'
+
 function resizeGameDiv() {
     var gameDiv = document.getElementById("game-div");
     var header = document.getElementById("header").offsetHeight;
@@ -32,6 +35,8 @@ class Player {
         }
 
         this.rotation = 0
+
+        this.playerLife = 3;
 
         const image = new Image();
         image.src = './img/spaceship.png'
@@ -98,36 +103,51 @@ class Projectile {
 }
 
 class Meteor {
-    constructor({ position }) {
+    constructor({ position, rngMeteorImage }) {
+
+        this.position = position;
 
         this.velocity = {
             x: 0,
             y: 0
         }
 
+        this.playerHit = false;
+
+        this.meteorLife = 2;
+
+        this.rngMeteorImage = rngMeteorImage;
+
         const image = new Image();
-        image.src = './img/SWARMINHO.png'
+        image.src = './img/Asteroids.png'
 
         image.onload = () => {
             this.image = image;
-            this.width = image.width;
+            this.width = image.width / 4;
             this.height = image.height;
             this.position = {
                 x: position.x,
                 y: position.y
             }
         }
+
+
     }
 
     draw() {
 
-        ctx.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+        ctx.drawImage(this.image, this.rngMeteorImage, 0, this.image.width / 4, this.image.height, this.position.x, this.position.y, this.width, this.height, this.image.width / 4, this.image.height);
 
     }
 
     update({ velocity }) {
         if (this.image) {
             this.draw();
+
+            if (this.position.x > canvas.width - this.image.width) {
+                this.position.x = canvas.width;
+            }
+
             this.position.x += velocity.x;
             this.position.y += velocity.y;
 
@@ -137,9 +157,6 @@ class Meteor {
                 const rngX = Math.floor(Math.random() * (canvas.width / 5));
                 this.position.y = 0 - this.image.height - rngY;
                 this.position.x = (rngPos * (canvas.width / 5)) + rngX;
-
-
-
             }
         }
 
@@ -160,24 +177,23 @@ class Grid {
 
         this.meteors = []
 
-
-        for (let i = 0; i < Math.floor(canvas.width / 50); i++) {
+        for (let i = 0; i < canvas.width / 50; i++) {
             const rngY = Math.floor(Math.random() * 1000);
             const rngX = Math.floor(Math.random() * (canvas.width / 5));
             const xPos = (i * (canvas.width / 5)) + rngX; //ainda vou usar isso aqui.
-
-
+            const rngImage = Math.floor(Math.random() * 3) * 48;
 
             this.meteors.push(
                 new Meteor({
                     position: {
                         x: (i * (canvas.width / 5)) + rngX,
                         y: 0 - rngY
-                    }
+                    },
+                    rngMeteorImage: rngImage
                 }))
 
         }
-        console.log(this.meteors)
+
     }
 
 
@@ -206,9 +222,13 @@ const keys = {
     }
 }
 
-
 function animate() {
-    requestAnimationFrame(animate);
+
+    console.log(player.playerLife);
+
+    if (player.playerLife > 0) {
+        requestAnimationFrame(animate);
+    }
 
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -224,9 +244,50 @@ function animate() {
 
     grids.forEach((grid) => {
         grid.update();
-        grid.meteors.forEach((meteors, index) => {
-
+        grid.meteors.forEach((meteors, i) => {
             meteors.update({ velocity: grid.velocity });
+            projectiles.forEach((projectile, j) => {
+                if (projectile.position.y - projectile.radius <= meteors.position.y + meteors.height && projectile.position.x >= meteors.position.x && projectile.position.x - projectile.radius <= meteors.position.x + meteors.height) {
+
+                    meteors.meteorLife -= 1;
+
+                    console.log(meteors.meteorLife);
+
+                    if (meteors.meteorLife <= 0) {
+
+                        grid.meteors.splice(i, 1);
+
+                        setTimeout(() => {
+                            const rngIndex = Math.floor(Math.random() * canvas.width / 50)
+                            const rngY = Math.floor(Math.random() * 1000);
+                            const rngX = Math.floor(Math.random() * (canvas.width / 5));
+                            const rngImage = Math.floor(Math.random() * 3) * 48;
+
+
+                            grid.meteors.push(
+                                new Meteor({
+                                    position: {
+                                        x: (rngIndex * (canvas.width / 5)) + rngX,
+                                        y: 0 - rngY
+                                    },
+                                    rngMeteorImage: rngImage
+                                }))
+
+                        }, 0)
+
+                    }
+
+                    projectiles.splice(j, 1);
+                }
+            })
+
+            if (player.image && meteors.position.x >= player.position.x && meteors.position.x <= player.position.x + player.image.height && meteors.position.y + meteors.image.height >= player.position.y && meteors.position.y + (meteors.image.height / 2) <= player.position.y + player.image.height && !meteors.playerHit) {
+                grid.meteors.splice(i, 1);
+                player.playerLife--;
+                console.log(player.playerLife);
+                meteors.playerHit = true;
+            }
+
         })
     })
 
@@ -247,6 +308,7 @@ function animate() {
         player.rotation = 0;
     }
 }
+
 
 animate();
 
