@@ -1,11 +1,16 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
+const btn = document.getElementById('gm-btn');
+const scoreP = document.getElementById('score');
 
 var tiro = 0;
 var canShot = true;
 
 const meteorImage = new Image();
-meteorImage.src = './img/Asteroids.png'
+meteorImage.src = './img/Asteroids.png';
+
+const heartImage = new Image();
+heartImage.src = './img/heart.png';
 
 function resizeGameDiv() {
     var gameDiv = document.getElementById("game-div");
@@ -21,6 +26,21 @@ function resizeGameDiv() {
 }
 
 resizeGameDiv();
+
+function scoreController(realScore) {
+    var score = Math.floor(realScore / 10);
+    if (score < 10) {
+        scoreP.textContent = "0000" + score;
+    } else if (score >= 10 && score < 100) {
+        scoreP.textContent = "000" + score;
+    } else if (score >= 100 && score < 1000) {
+        scoreP.textContent = "00" + score;
+    } else if (score >= 1000 && score < 10000) {
+        scoreP.textContent = "0" + score;
+    } else {
+        scoreP.textContent = score;
+    }
+}
 
 class Player {
     constructor() {
@@ -74,6 +94,7 @@ class Player {
         if (this.image) {
             this.draw();
             this.position.x += this.velocity.x;
+            this.position.y += this.velocity.y;
         }
     }
 }
@@ -101,6 +122,35 @@ class Projectile {
         this.position.y += this.velocity.y;
     }
 }
+
+class Lifes {
+    constructor() {
+
+        const image = new Image();
+        image.src = './img/heart.png'
+
+        image.onload = () => {
+            this.image = image;
+            this.width = image.width;
+            this.height = image.height;
+            this.position = {
+                x: 0,
+                y: canvas.height - this.height
+            }
+        }
+    }
+
+    draw() {
+        for (var k = 0; k < player.playerLife; k++) {
+            ctx.drawImage(this.image, k * this.width, canvas.height - this.height, this.width, this.height);
+        }
+    }
+
+    update() {
+        this.draw();
+    }
+}
+
 
 class Meteor {
     constructor({ position, rngMeteorImage }) {
@@ -206,6 +256,8 @@ class Grid {
 const player = new Player();
 const projectiles = [];
 const grids = [new Grid()];
+const lifes = new Lifes();
+var score = 0;
 
 const keys = {
     ArrowUp: {
@@ -226,14 +278,20 @@ function animate() {
 
     console.log(player.playerLife);
 
+    scoreController(score);
+
     if (player.playerLife > 0) {
         requestAnimationFrame(animate);
     }
+
+
+    ctx.fillText("Hello World", 100, 100);
 
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     player.update();
+    lifes.update();
     projectiles.forEach((projectile, index) => {
         if (projectile.position.y + projectile.radius <= 0) {
             projectiles.splice(index, 1);
@@ -254,7 +312,7 @@ function animate() {
                     console.log(meteors.meteorLife);
 
                     if (meteors.meteorLife <= 0) {
-
+                        score += 1000;
                         grid.meteors.splice(i, 1);
 
                         setTimeout(() => {
@@ -281,7 +339,9 @@ function animate() {
                 }
             })
 
-            if (player.image && meteors.position.x >= player.position.x && meteors.position.x <= player.position.x + player.image.height && meteors.position.y + meteors.image.height >= player.position.y && meteors.position.y + (meteors.image.height / 2) <= player.position.y + player.image.height && !meteors.playerHit) {
+
+
+            if (player.image && meteors.position.x >= player.position.x - (player.image.width / 2) && meteors.position.x <= player.position.x + player.image.height && meteors.position.y + meteors.image.height >= player.position.y && meteors.position.y + (meteors.image.height / 2) <= player.position.y + player.image.height && !meteors.playerHit) {
                 grid.meteors.splice(i, 1);
                 player.playerLife--;
                 console.log(player.playerLife);
@@ -291,17 +351,22 @@ function animate() {
         })
     })
 
+    score++;
 
-    if (keys.ArrowUp.pressed && player.position.y >= 0) {
-        player.velocity.y = -3;
-    } else if (keys.ArrowLeft.pressed && player.position.x >= 0) {
+    if (keys.ArrowUp.pressed && player.position.y + player.height <= canvas.height) {
+        player.velocity.y = -2;
+        player.velocity.x = 0;
+        player.rotation = 0;
+    } else if (keys.ArrowDown.pressed && player.position.y + player.height < canvas.height) {
+        player.velocity.y = 2;
+        player.velocity.x = 0;
+        player.rotation = 0;
+    } else if (keys.ArrowLeft.pressed && player.position.x >= 0 && player.position.y <= canvas.height - player.image.height) {
         player.velocity.x = -3;
-        player.rotation = -.15;
-    } else if (keys.ArrowRight.pressed && player.position.x + player.width <= canvas.width) {
+        player.rotation = -.2;
+    } else if (keys.ArrowRight.pressed && player.position.x + player.width <= canvas.width && player.position.y <= canvas.height - player.image.height) {
         player.velocity.x = 3;
-        player.rotation = .15;
-    } else if (keys.ArrowDown.pressed && player.position.y + player.height <= canvas.height) {
-        player.velocity.y = 3;
+        player.rotation = .2;
     } else {
         player.velocity.x = 0;
         player.velocity.y = 0;
@@ -309,25 +374,32 @@ function animate() {
     }
 }
 
+function startGame() {
+    animate();
+    btn.remove();
 
-animate();
+}
 
-
+var lastKeyDown = ''
 
 window.addEventListener('keydown', (e) => {
 
     switch (e.key) {
         case 'ArrowUp':
             keys.ArrowUp.pressed = true;
+            //lastKeyDown = 'ArrowUp';
             break;
         case 'ArrowLeft':
             keys.ArrowLeft.pressed = true;
+            //lastKeyDown = 'ArrowLeft';
             break;
         case 'ArrowRight':
             keys.ArrowRight.pressed = true;
+            //lastKeyDown = 'ArrowRight';
             break;
         case 'ArrowDown':
             keys.ArrowDown.pressed = true;
+            //lastKeyDown = 'ArrowDown';
             break;
         case 'Control':
             if (canShot) {
