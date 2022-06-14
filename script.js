@@ -63,8 +63,8 @@ class Player {
 
         image.onload = () => {
             this.image = image;
-            this.width = 75;
-            this.height = 75;
+            this.width = 50;
+            this.height = 50;
             this.position = {
                 x: canvas.width / 2,
                 y: canvas.height - this.height
@@ -173,8 +173,8 @@ class Meteor {
 
         image.onload = () => {
             this.image = image;
-            this.width = image.width / 4;
-            this.height = image.height;
+            this.width = (image.width / 4) * 1.3;
+            this.height = (image.height) * 1.3;
             this.position = {
                 x: position.x,
                 y: position.y
@@ -222,7 +222,7 @@ class Grid {
 
         this.velocity = {
             x: 0,
-            y: 5
+            y: 7
         }
 
         this.meteors = []
@@ -253,11 +253,7 @@ class Grid {
     }
 }
 
-const player = new Player();
-const projectiles = [];
-const grids = [new Grid()];
-const lifes = new Lifes();
-var score = 0;
+
 
 const keys = {
     ArrowUp: {
@@ -274,134 +270,190 @@ const keys = {
     }
 }
 
-function animate() {
+const player = new Player();
+const projectiles = [];
 
-    console.log(player.playerLife);
+function game() {
+    const grids = [new Grid()];
+    const lifes = new Lifes();
+    var score = 0;
 
-    scoreController(score);
+    function animate() {
 
-    if (player.playerLife > 0) {
-        requestAnimationFrame(animate);
-    }
+        scoreController(score);
 
-
-    ctx.fillText("Hello World", 100, 100);
-
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    player.update();
-    lifes.update();
-    projectiles.forEach((projectile, index) => {
-        if (projectile.position.y + projectile.radius <= 0) {
-            projectiles.splice(index, 1);
+        if (player.playerLife > 0) {
+            requestAnimationFrame(animate);
         } else {
-            projectile.update();
+            btn.textContent = "Restart Game";
+            btn.style.visibility = "visible";
+            btn.disable = false;
         }
-    })
 
-    grids.forEach((grid) => {
-        grid.update();
-        grid.meteors.forEach((meteors, i) => {
-            meteors.update({ velocity: grid.velocity });
-            projectiles.forEach((projectile, j) => {
-                if (projectile.position.y - projectile.radius <= meteors.position.y + meteors.height && projectile.position.x >= meteors.position.x && projectile.position.x - projectile.radius <= meteors.position.x + meteors.height) {
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                    meteors.meteorLife -= 1;
+        player.update();
+        lifes.update();
+        projectiles.forEach((projectile, index) => {
+            if (projectile.position.y + projectile.radius <= 0) {
+                projectiles.splice(index, 1);
+            } else {
+                projectile.update();
+            }
+        })
 
-                    console.log(meteors.meteorLife);
+        grids.forEach((grid) => {
+            grid.update();
+            grid.meteors.forEach((meteors, i) => {
+                meteors.update({ velocity: grid.velocity });
+                projectiles.forEach((projectile, j) => {
+                    if (projectile.position.y - projectile.radius <= meteors.position.y + meteors.height && projectile.position.x >= meteors.position.x && projectile.position.x - projectile.radius <= meteors.position.x + meteors.height) {
 
-                    if (meteors.meteorLife <= 0) {
-                        score += 1000;
-                        grid.meteors.splice(i, 1);
+                        meteors.meteorLife -= 1;
 
-                        setTimeout(() => {
-                            const rngIndex = Math.floor(Math.random() * canvas.width / 50)
-                            const rngY = Math.floor(Math.random() * 1000);
-                            const rngX = Math.floor(Math.random() * (canvas.width / 5));
-                            const rngImage = Math.floor(Math.random() * 3) * 48;
+                        console.log(meteors.meteorLife);
+
+                        if (meteors.meteorLife <= 0) {
+                            score += 1000;
+                            grid.meteors.splice(i, 1);
+
+                            setTimeout(() => {
+                                const rngIndex = Math.floor(Math.random() * canvas.width / 50)
+                                const rngY = Math.floor(Math.random() * 1000);
+                                const rngX = Math.floor(Math.random() * (canvas.width / 5));
+                                const rngImage = Math.floor(Math.random() * 3) * 48;
 
 
-                            grid.meteors.push(
-                                new Meteor({
-                                    position: {
-                                        x: (rngIndex * (canvas.width / 5)) + rngX,
-                                        y: 0 - rngY
-                                    },
-                                    rngMeteorImage: rngImage
-                                }))
+                                grid.meteors.push(
+                                    new Meteor({
+                                        position: {
+                                            x: (rngIndex * (canvas.width / 5)) + rngX,
+                                            y: 0 - rngY
+                                        },
+                                        rngMeteorImage: rngImage
+                                    }))
 
-                        }, 0)
+                            }, 0)
 
+                        }
+
+                        projectiles.splice(j, 1);
                     }
+                })
 
-                    projectiles.splice(j, 1);
+
+
+                if (player.image && meteors.position.x + meteors.width >= player.position.x && meteors.position.x <= player.position.x + player.width && meteors.position.y + meteors.height >= player.position.y && meteors.position.y < player.position.y + player.height && !meteors.playerHit) {
+                    grid.meteors.splice(i, 1);
+                    player.playerLife--;
+                    console.log(player.playerLife);
+                    meteors.playerHit = true;
                 }
+
             })
 
-
-
-            if (player.image && meteors.position.x >= player.position.x - (player.image.width / 2) && meteors.position.x <= player.position.x + player.image.height && meteors.position.y + meteors.image.height >= player.position.y && meteors.position.y + (meteors.image.height / 2) <= player.position.y + player.image.height && !meteors.playerHit) {
-                grid.meteors.splice(i, 1);
-                player.playerLife--;
-                console.log(player.playerLife);
-                meteors.playerHit = true;
-            }
-
         })
-    })
 
-    score++;
+        score++;
 
-    if (keys.ArrowUp.pressed && player.position.y + player.height <= canvas.height) {
-        player.velocity.y = -2;
-        player.velocity.x = 0;
-        player.rotation = 0;
-    } else if (keys.ArrowDown.pressed && player.position.y + player.height < canvas.height) {
-        player.velocity.y = 2;
-        player.velocity.x = 0;
-        player.rotation = 0;
-    } else if (keys.ArrowLeft.pressed && player.position.x >= 0 && player.position.y <= canvas.height - player.image.height) {
-        player.velocity.x = -3;
-        player.rotation = -.2;
-    } else if (keys.ArrowRight.pressed && player.position.x + player.width <= canvas.width && player.position.y <= canvas.height - player.image.height) {
-        player.velocity.x = 3;
-        player.rotation = .2;
-    } else {
-        player.velocity.x = 0;
-        player.velocity.y = 0;
-        player.rotation = 0;
+        if (keys.ArrowUp.pressed && player.position.y + player.height <= canvas.height) {
+            player.velocity.y = -3;
+            player.velocity.x = 0;
+            player.rotation = 0;
+        } else if (keys.ArrowDown.pressed && player.position.y + player.height < canvas.height) {
+            player.velocity.y = 3;
+            player.velocity.x = 0;
+            player.rotation = 0;
+        } else if (keys.ArrowLeft.pressed && player.position.x >= 0 && player.position.y <= canvas.height - player.height) {
+            player.velocity.x = -3;
+            player.velocity.y = 0;
+            player.rotation = -.2;
+        } else if (keys.ArrowRight.pressed && player.position.x + player.width <= canvas.width && player.position.y <= canvas.height - player.height) {
+            player.velocity.x = 3;
+            player.velocity.y = 0;
+            player.rotation = .2;
+        } else {
+            player.velocity.x = 0;
+            player.velocity.y = 0;
+            player.rotation = 0;
+            if (player.position.y > canvas.height - player.height) {
+                player.position.y = canvas.height - player.height;
+                console.log('')
+            }
+        }
+
+        console.log(player.position.y, player.image.height, canvas.height);
     }
+
+
+
+    animate()
+
 }
 
 function startGame() {
-    animate();
-    btn.remove();
-
+    player.position.x = canvas.width / 2;
+    player.position.y = canvas.height - player.height;
+    player.playerLife = 3;
+    btn.style.visibility = "hidden";
+    btn.disable = true;
+    game();
 }
 
 var lastKeyDown = ''
 
+window.addEventListener('keyup', (e) => {
+    console.log(e);
+    switch (e.key) {
+        case 'ArrowUp':
+        case 'w':
+            keys.ArrowUp.pressed = false;
+            break;
+        case 'ArrowLeft':
+        case 'a':
+            keys.ArrowLeft.pressed = false;
+            break;
+        case 'ArrowRight':
+        case 'd':
+            keys.ArrowRight.pressed = false;
+            break;
+        case 'ArrowDown':
+        case 's':
+            keys.ArrowDown.pressed = false;
+            break;
+        case 'Control':
+        case ' ':
+            canShot = true;
+
+            break;
+    }
+})
 window.addEventListener('keydown', (e) => {
 
     switch (e.key) {
         case 'ArrowUp':
+        case 'w':
             keys.ArrowUp.pressed = true;
             //lastKeyDown = 'ArrowUp';
             break;
         case 'ArrowLeft':
+        case 'a':
             keys.ArrowLeft.pressed = true;
             //lastKeyDown = 'ArrowLeft';
             break;
         case 'ArrowRight':
+        case 'd':
             keys.ArrowRight.pressed = true;
             //lastKeyDown = 'ArrowRight';
             break;
         case 'ArrowDown':
+        case 's':
             keys.ArrowDown.pressed = true;
             //lastKeyDown = 'ArrowDown';
             break;
         case 'Control':
+        case ' ':
             if (canShot) {
                 if (tiro == 0) {
                     projectiles.push(new Projectile({
@@ -432,27 +484,6 @@ window.addEventListener('keydown', (e) => {
                 }
                 canShot = false;
             }
-            break;
-    }
-})
-
-window.addEventListener('keyup', (e) => {
-    switch (e.key) {
-        case 'ArrowUp':
-            keys.ArrowUp.pressed = false;
-            break;
-        case 'ArrowLeft':
-            keys.ArrowLeft.pressed = false;
-            break;
-        case 'ArrowRight':
-            keys.ArrowRight.pressed = false;
-            break;
-        case 'ArrowDown':
-            keys.ArrowDown.pressed = false;
-            break;
-        case 'Control':
-            canShot = true;
-
             break;
     }
 })
