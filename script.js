@@ -13,7 +13,7 @@ const heartImage = new Image();
 heartImage.src = './img/heart.png';
 
 function resizeGameDiv() {
-    var gameDiv = document.getElementById("game-div");
+    var gameDiv = document.getElementById("core-div");
     var header = document.getElementById("header").offsetHeight;
     var footer = document.getElementById("footer").offsetHeight;
     var windowHeight = window.innerHeight;
