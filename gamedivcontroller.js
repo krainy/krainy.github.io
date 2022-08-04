@@ -1,4 +1,4 @@
-function resizeGameDiv() {
+function resizeMainDiv() {
     var gameDiv = document.getElementById("core-div");
     var header = document.getElementById("header").offsetHeight;
     var footer = document.getElementById("footer").offsetHeight;

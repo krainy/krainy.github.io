@@ -46,6 +46,7 @@ html {
 p {
     color: white;
     font-family: alagard;
+    text-decoration: none;
 }
 
 a {
@@ -90,6 +91,7 @@ header {
     flex-direction: column;
     justify-content: center;
     padding-right: 5vw;
+    white-space: nowrap;
 }
 
 .logo {
@@ -104,11 +106,18 @@ header {
 
 .li-nks {
     display: inline;
+    float: left;
+
 }
 
 a.link {
     font-size: 130%;
     padding-right: 1vw;
+}
+
+.link-ul{
+    padding-right: 37px;
+    padding-inline-start: 0px;
 }
 
 .core-ws{
@@ -139,7 +148,7 @@ footer {
     background-color: #050505;
     position: absolute;
     bottom: 0;
-    min-width: 100vw;
+    width: calc(100vw - (100vw - 100%));
 }
 
 .contacts {
@@ -225,7 +234,8 @@ ul.link_contato {
         font-size: 4.5vw;
     }
     a.link {
-        font-size: 4vw;
+        font-size: 3vw;
+        padding-right: 2vw;
     }
     .p_cont {
         font-size: 2.5vw;
@@ -238,7 +248,7 @@ ul.link_contato {
     }
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 801px) {
     header {
         padding: 5px;
     }
