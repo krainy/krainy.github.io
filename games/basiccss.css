@@ -47,9 +47,51 @@ p.core-item{
     font-size: 115%;
 }
 
+.core-div{
+    align-items: center;
+}
+
+.games{
+    align-self: center;
+    display: block;
+    word-wrap: break-word;
+}
+
+.grid{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.game{
+    position: relative;
+    margin: 2% 2% 2%;
+    padding: 1% 2%;
+}
+
+.gameDescription{
+    align-items: center;
+    padding-left: 5%;
+}
+
+.gameDescription p{
+    font-size: 115%;
+    text-align: center;
+}
+
 footer {
     background-color: #050505;
     position: relative;
     bottom: 0;
     width: calc(100vw - (100vw - 100%));
+}
+
+@media screen and ( max-width: 600px ){
+    .game{
+        display: flex;
+    }
+    .grid{
+        flex-direction: column;
+    }
 }

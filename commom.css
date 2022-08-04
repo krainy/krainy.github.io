@@ -82,7 +82,6 @@ header {
     right: initial;
     top: initial;
     padding-top: 5px;
-    padding-bottom: 5px;
 }
 
 .links {
@@ -107,12 +106,13 @@ header {
 .li-nks {
     display: inline;
     float: left;
-
+    vertical-align: middle;
 }
 
 a.link {
     font-size: 130%;
     padding-right: 1vw;
+    
 }
 
 .link-ul{
@@ -185,10 +185,11 @@ ul.link_contato {
     position: absolute;
     align-self: flex-end;
     right: 0;
+    padding-right: 1%;
 }
 
 .font-credit {
-    font-size: 75%;
+    font-size: 80%;
 }
 
 .li-contts {
@@ -197,44 +198,12 @@ ul.link_contato {
     margin-bottom: 2px;
 }
 
-.game-comm {
-    position: absolute;
-    align-self: flex-start;
-    text-align: left;
-    left: 0;
-    font-size: 85%;
-}
-
-#game-div {
-    align-items: center;
-    min-width: 100vw;
-    background-color: black;
-}
-
-#score-div {
-    display: flex;
-    position: relative;
-    display: inline;
-    flex-direction: column;
-    align-content: flex-end;
-    bottom: 5vh;
-    right: 5px;
-}
-
-#score {
-    font-family: alagard;
-    font-size: 100%;
-    align-self: flex-start;
-    text-align: right;
-    left: initial
-}
-
 @media screen and (max-width: 800px) {
     .logo {
         font-size: 4.5vw;
     }
     a.link {
-        font-size: 3vw;
+        font-size: 120%;
         padding-right: 2vw;
     }
     .p_cont {
