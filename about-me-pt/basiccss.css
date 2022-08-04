@@ -48,15 +48,16 @@ h3{
 
 .core-text{
     display: block;
-    margin-left: 200px;
-    margin-right: 200px;
+    margin-left: 300px;
+    margin-right: 300px;
 }
 
 .core-item{
     flex: 100%;
-    padding-right: 200px;
-    padding-left: 200px;
+    padding-right: calc((calc(100vw - (100vw - 100%)))/2 - 400px);
+    padding-left: calc((calc(100vw - (100vw - 100%)))/2 - 400px);
     font-family: 'Trebuchet MS';
+    min-width: 600px;
 }
 
 .core-prof{
