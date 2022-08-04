@@ -246,6 +246,10 @@ ul.link_contato {
     .contact_link {
         size: (1.6vw, 2vw);
     }
+    .core-item{
+        padding-right: 0px;
+        padding-left: 0px;
+    }
 }
 
 @media screen and (min-width: 801px) {

@@ -48,16 +48,14 @@ h3{
 
 .core-text{
     display: block;
-    margin-left: 300px;
-    margin-right: 300px;
 }
 
 .core-item{
     flex: 100%;
-    padding-right: calc((calc(100vw - (100vw - 100%)))/2 - 400px);
-    padding-left: calc((calc(100vw - (100vw - 100%)))/2 - 400px);
+    padding-right: calc(50vw - 400px);
+    padding-left: calc(50vw - 400px);
     font-family: 'Trebuchet MS';
-    min-width: 600px;
+    max-width: 800px;
 }
 
 .core-prof{
@@ -137,4 +135,15 @@ footer {
     position: relative;
     bottom: 0;
     width: calc(100vw - (100vw - 100%));
+}
+
+@media screen and (max-width: 800px) {
+    .core-item{
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+    p.core-item{
+        text-align: center;
+        font-size: 3vw;
+    }
 }
