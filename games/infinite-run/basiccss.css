@@ -6,6 +6,10 @@
     font-size: 85%;
 }
 
+.core-ws{
+    background-color: black;
+}
+
 #game-div {
     align-items: center;
     min-width: 100vw;
@@ -20,6 +24,11 @@
     align-content: flex-end;
     top: 6.5vh;
     right: 5px;
+}
+
+#gm-btn{
+    background-color: black;
+    border: none;
 }
 
 #score {

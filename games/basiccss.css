@@ -72,7 +72,6 @@ p.core-item{
 
 .gameDescription{
     align-items: center;
-    padding-left: 5%;
 }
 
 .gameDescription p{
@@ -93,5 +92,8 @@ footer {
     }
     .grid{
         flex-direction: column;
+    }
+    .gameDescription{
+        padding-left: 5%;
     }
 }

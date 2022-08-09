@@ -31,7 +31,7 @@ body::-webkit-scrollbar-thumb {
 /* scrollbar */
 
 body {
-    background-color: #353535;
+    background-color: #1e2122;
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -66,7 +66,7 @@ header {
     position: sticky;
     z-index: 999;
     padding: 0.5vw;
-    background-color: #080808;
+    background-color: #181a1b;
 }
 
 .container {
@@ -121,7 +121,7 @@ a.link {
 }
 
 .core-ws{
-    background-color: black;
+    background-color: #1e2122;
 }
 
 #gm-btn {
@@ -145,7 +145,7 @@ a.link {
 }
 
 footer {
-    background-color: #050505;
+    background-color: #202122;
     position: absolute;
     bottom: 0;
     width: calc(100vw - (100vw - 100%));

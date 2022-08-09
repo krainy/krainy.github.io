@@ -131,10 +131,8 @@ p.core-item{
 }
 
 footer {
-    background-color: #050505;
     position: relative;
     bottom: 0;
-    width: calc(100vw - (100vw - 100%));
 }
 
 @media screen and (max-width: 800px) {

@@ -7,6 +7,10 @@
     font-size: 85%;
 }
 
+.core-ws{
+    background-color: black;
+}
+
 #game-div {
     align-items: center;
     min-width: 100vw;

@@ -38,7 +38,7 @@
 
     <div id="core-div" class="core-ws">
         <button type="button" id="gm-btn" onclick="startGame()" text="Start Game">Start Game</button>
-        <canvas></canvas>
+        <canvas onclick="eventTouch()"></canvas>
         <div id="score-div">
             <p id="score">Score: 00000</p>
         </div>
@@ -46,37 +46,37 @@
     </div>
 
 
-        <footer id="footer">
-            <div class="container-ft">
-                <div class="game-comm">
-                    <p></p>
-                    <ul>
-                        <li>
-                            <p>CTRL - Atira</p>
-                        </li>
-                        <li>
-                            <p>SETAS - Movimentação</p>
-                        </li>
-                    </ul>
-                </div>
-                <div class="contacts" id="contacts">
-                    <p class="p_cont">Contatos</p>
-                    <ul class="link_contato">
-                        <li class="li-contts">
-                            <a class="contacts_link" href="https://twitter.com/kkkkrainny" target="_blank"><img class="cont-png" height="16" width="20" src="../../pic/ttpic.png"></img>@kkkkrainy</a>
-                        </li>
-                        <li class="li-contts">
-                            <a class="contacts_link" href="https://github.com/krainy" target="_blank"><img class="cont-png" height="20" width="20" src="../../pic/giticon.png"></img>@krainy</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="credits">
-                    <a class="font-credit" href="https://www.dafont.com/alagard.font" target="_blank">font by Hewett Tsoi</a>
-                </div>
+    <footer id="footer">
+        <div class="container-ft">
+            <div class="game-comm">
+                <p></p>
+                <ul>
+                    <li>
+                        <p>ESPAÇO - Pula</p>
+                    </li>
+                </ul>
             </div>
-        </footer>
-        <script src="../../gamedivcontroller.js"></script>
-        <script src="../../script.js"></script>
+            <div class="contacts" id="contacts">
+                <p class="p_cont">Contatos</p>
+                <ul class="link_contato">
+                    <li class="li-contts">
+                        <a class="contacts_link" href="https://twitter.com/kkkkrainny" target="_blank"><img
+                                class="cont-png" height="16" width="20" src="../../pic/ttpic.png"></img>@kkkkrainy</a>
+                    </li>
+                    <li class="li-contts">
+                        <a class="contacts_link" href="https://github.com/krainy" target="_blank"><img class="cont-png"
+                                height="20" width="20" src="../../pic/giticon.png"></img>@krainy</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="credits">
+                <a class="font-credit" href="https://www.dafont.com/alagard.font" target="_blank">font by Hewett
+                    Tsoi</a>
+            </div>
+        </div>
+    </footer>
+    <script src="../../gamedivcontroller.js"></script>
+    <script src="./gamescript.js"></script>
 </body>
 
 </html>
