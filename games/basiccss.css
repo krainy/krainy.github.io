@@ -79,6 +79,12 @@ p.core-item{
     text-align: center;
 }
 
+#px{
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
 footer {
     background-color: #050505;
     position: relative;

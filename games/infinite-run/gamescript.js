@@ -4,6 +4,9 @@ const btn = document.getElementById('gm-btn');
 const scoreP = document.getElementById('score');
 ctx.filter = 'none';
 
+
+
+
 function resizeGameDiv() {
     var gameDiv = document.getElementById("core-div");
     var header = document.getElementById("header").offsetHeight;
@@ -18,6 +21,7 @@ function resizeGameDiv() {
 }
 
 resizeGameDiv();
+console.log("width: " + canvas.width + " height: " + canvas.height);
 
 function scoreController(realScore) {
     var score = Math.floor(realScore / 10);
@@ -61,8 +65,8 @@ class Player {
 
         image.onload = () => {
             this.image = image;
-            this.width = 64;
-            this.height = 64;
+            this.width = canvas.width * 0.07;
+            this.height = canvas.width * 0.07;
             this.position = {
                 x: canvas.width / 4,
                 y: canvas.height - this.height - 12
@@ -82,8 +86,8 @@ class Player {
             this.image.height,
             this.position.x,
             this.position.y,
-            this.image.width / this.frames.max,
-            this.image.height
+            this.width,
+            this.height
         );
 
         if (this.frames.max > 1) {
@@ -106,7 +110,7 @@ class Player {
             this.position.x += this.velocity.x;
             this.position.y += this.velocity.y;
 
-            if (this.position.y + this.height + this.velocity.y + 12 <= canvas.height) {
+            if (this.position.y + this.image.height + this.velocity.y + 12 <= canvas.height) {
                 this.velocity.y += gravity;
             } else {
                 this.velocity.y = 0;
@@ -359,6 +363,8 @@ function game() {
         grids.forEach((grid) => {
             grid.ground.forEach((ground, i) => {
                 ground.update();
+
+
 
             })
             grid.topGround.forEach((topGround, i) => {
