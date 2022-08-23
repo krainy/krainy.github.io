@@ -3,8 +3,11 @@ const ctx = canvas.getContext('2d');
 const btn = document.getElementById('gm-btn');
 const scoreP = document.getElementById('score');
 ctx.filter = 'none';
+var far_obs = 9;
 
 
+
+console.log(ctx)
 
 
 function resizeGameDiv() {
@@ -22,6 +25,13 @@ function resizeGameDiv() {
 
 resizeGameDiv();
 console.log("width: " + canvas.width + " height: " + canvas.height);
+
+ctx.webkitImageSmoothingEnabled = false;
+ctx.mozImageSmoothingEnabled = false;
+ctx.msImageSmoothingEnabled = false;
+ctx.imageSmoothingEnabled = false;
+
+console.log(ctx)
 
 function scoreController(realScore) {
     var score = Math.floor(realScore / 10);
@@ -60,13 +70,17 @@ class Player {
             elapsed: 0
         }
 
+        //this.dirtHeight = 20;
+
         const image = new Image();
         image.src = './sprite/lilcat-Sheet.png'
 
         image.onload = () => {
             this.image = image;
-            this.width = canvas.width * 0.07;
-            this.height = canvas.width * 0.07;
+            ctx.imageSmoothingEnabled = false;
+            console.log(image)
+            this.width = 64;
+            this.height = 64;
             this.position = {
                 x: canvas.width / 4,
                 y: canvas.height - this.height - 12
@@ -78,6 +92,8 @@ class Player {
     draw() {
         ctx.save();
 
+        ctx.imageSmoothingEnabled = false;
+        console.log(ctx.imageSmoothingEnabled)
         ctx.drawImage(
             this.image,
             this.frames.value * (this.image.width / 8) - .5,
@@ -110,7 +126,7 @@ class Player {
             this.position.x += this.velocity.x;
             this.position.y += this.velocity.y;
 
-            if (this.position.y + this.image.height + this.velocity.y + 12 <= canvas.height) {
+            if (this.position.y + this.height + this.velocity.y + 13 <= canvas.height) {
                 this.velocity.y += gravity;
             } else {
                 this.velocity.y = 0;
@@ -148,7 +164,7 @@ class Dirt {
 
 
     draw() {
-
+        ctx.imageSmoothingEnabled = false;
         ctx.drawImage(
             this.image,
             this.randomXGroundImage * 32,
@@ -206,6 +222,7 @@ class topGround {
 
 
     draw() {
+        ctx.imageSmoothingEnabled = false;
         ctx.drawImage(
             this.image,
             this.randomXTopImage * 32,
@@ -263,6 +280,7 @@ class House_1 {
     }
 
     draw() {
+        ctx.imageSmoothingEnabled = false;
         ctx.drawImage(
             this.image,
             this.position.x,
@@ -277,9 +295,7 @@ class House_1 {
             this.position.x += this.velocity.x;
             this.velocity.x += -0.001;
 
-            if (this.position.x + this.width < 0) {
-                this.position.x = 5000 + canvas.width + Math.min(500 - this.width, (Math.random() * 500))
-            }
+
 
             this.draw();
         }
@@ -300,7 +316,7 @@ class Grid {
 
         this.ground = []
         this.topGround = []
-        this.obstacles = []
+        this.houses = []
 
         for (let i = 0; i < (canvas.width / 32) + 1; i++) {
             this.ground.push(
@@ -322,7 +338,7 @@ class Grid {
         }
 
         for (let i = 0; i < 10; i++) {
-            this.obstacles.push(
+            this.houses.push(
                 new House_1({
                     position: {
                         x: (i * 500) + canvas.width,
@@ -340,6 +356,7 @@ const player = new Player();
 function game() {
 
     const grids = [new Grid()];
+    player.dirtHeight = Dirt.height;
     score = 0;
 
     function animate() {
@@ -367,12 +384,22 @@ function game() {
 
 
             })
-            grid.topGround.forEach((topGround, i) => {
+            grid.topGround.forEach((topGround, j) => {
                 topGround.update();
             })
-            grid.obstacles.forEach((obstacles, i) => {
+            grid.houses.forEach((obstacles, k) => {
 
                 obstacles.update();
+
+
+                if (obstacles.position.x + obstacles.width < 0) {
+                    obstacles.position.x = grid.houses[far_obs].position.x + Math.min(500 - this.width, (Math.random() * 500))
+                    far_obs++
+                    if (far_obs > 9) far_obs = 0
+
+                    console.log(grid.houses[far_obs])
+                }
+
 
                 if ((player.position.x + player.width >= obstacles.position.x) && (player.position.x <= obstacles.position.x + obstacles.width)) {
                     if ((player.position.y + player.height + player.velocity.y >= obstacles.position.y) && (player.position.y + player.height <= obstacles.position.y + player.velocity.y)) {
@@ -389,7 +416,7 @@ function game() {
                         grid.topGround.forEach((topGround) => {
                             topGround.velocity.x = 0
                         })
-                        grid.obstacles.forEach((obstacles) => {
+                        grid.houses.forEach((obstacles) => {
                             obstacles.velocity.x = 0
                         })
                     }
@@ -433,3 +460,7 @@ function jump() {
     jumpd = false;
     player.velocity.y -= 20;
 }
+
+window.addEventListener('resize', function (e) {
+    ctx.imageSmoothingEnabled = false;
+}, false)
