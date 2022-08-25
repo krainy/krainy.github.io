@@ -96,7 +96,7 @@ class Player {
         console.log(ctx.imageSmoothingEnabled)
         ctx.drawImage(
             this.image,
-            this.frames.value * (this.image.width / 8) - .5,
+            this.frames.value * (this.image.width / 8),
             0,
             this.image.width / this.frames.max,
             this.image.height,
@@ -265,6 +265,8 @@ class House_1 {
 
         this.iterator = iterator;
 
+        this.rng = Math.min(500 - this.width, (Math.random() * 500));
+
         const image = new Image();
         image.src = './sprite/house1.png'
 
@@ -293,9 +295,12 @@ class House_1 {
     update() {
         if (this.image) {
             this.position.x += this.velocity.x;
-            this.velocity.x += -0.001;
+            this.velocity.x -= 0.001;
 
-
+            if (this.position.x + this.width < 0) {
+                this.position.x = (this.iterator * 500) + canvas.width;
+            }
+            //console.log(this)
 
             this.draw();
         }
@@ -392,13 +397,13 @@ function game() {
                 obstacles.update();
 
 
-                if (obstacles.position.x + obstacles.width < 0) {
-                    obstacles.position.x = grid.houses[far_obs].position.x + Math.min(500 - this.width, (Math.random() * 500))
-                    far_obs++
-                    if (far_obs > 9) far_obs = 0
+                // if (obstacles.position.x + obstacles.width < 0) {
+                //     obstacles.position.x = grid.houses[far_obs].position.x + Math.min(500 - this.width, (Math.random() * 500))
+                //     far_obs++
+                //     if (far_obs > 9) far_obs = 0
 
-                    console.log(grid.houses[far_obs])
-                }
+                //     console.log(grid.houses[far_obs])
+                // }
 
 
                 if ((player.position.x + player.width >= obstacles.position.x) && (player.position.x <= obstacles.position.x + obstacles.width)) {
