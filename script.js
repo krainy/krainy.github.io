@@ -12,17 +12,19 @@ meteorImage.src = './img/Asteroids.png';
 const heartImage = new Image();
 heartImage.src = './img/heart.png';
 
+var testing = true;
+
 function resizeGameDiv() {
-    var gameDiv = document.getElementById("core-div");
+    var mainDiv = document.getElementById("core-div");
     var header = document.getElementById("header").offsetHeight;
     var footer = document.getElementById("footer").offsetHeight;
     var windowHeight = window.innerHeight;
 
     var calcHeight = windowHeight - header - footer;
 
-    gameDiv.style.height = calcHeight + "px";
-    canvas.height = gameDiv.offsetHeight;
-    canvas.width = gameDiv.offsetWidth;
+    mainDiv.style.height = calcHeight + "px";
+    mainDiv.offsetHeight > 800 ? canvas.height = 800 : canvas.height = mainDiv.offsetHeight;
+    canvas.width = canvas.height;
 }
 
 resizeGameDiv();
@@ -173,8 +175,8 @@ class Meteor {
 
         image.onload = () => {
             this.image = image;
-            this.width = (image.width / 4) * 1.3;
-            this.height = (image.height) * 1.3;
+            this.width = (image.width / 4);
+            this.height = (image.height);
             this.position = {
                 x: position.x,
                 y: position.y
@@ -186,7 +188,17 @@ class Meteor {
 
     draw() {
 
-        ctx.drawImage(this.image, this.rngMeteorImage, 0, this.image.width / 4, this.image.height, this.position.x, this.position.y, this.width, this.height, this.image.width / 4, this.image.height);
+        ctx.drawImage(this.image,
+            this.rngMeteorImage,
+            0,
+            this.image.width / 4,
+            this.image.height,
+            this.position.x,
+            this.position.y,
+            2 * this.width / 3,
+            2 * this.height / 3,
+            this.image.width / 4,
+            this.image.height);
 
     }
 
@@ -227,10 +239,17 @@ class Grid {
 
         this.meteors = []
 
-        for (let i = 0; i < canvas.width / 50; i++) {
+
+
+
+
+    }
+
+    createMeteors() {
+        for (let i = 0; i < 10; i++) {
             const rngY = Math.floor(Math.random() * 1000);
             const rngX = Math.floor(Math.random() * (canvas.width / 5));
-            const xPos = (i * (canvas.width / 5)) + rngX; //ainda vou usar isso aqui.
+            //const xPos = (i * (canvas.width / 5)) + rngX; ainda vou usar isso aqui.
             const rngImage = Math.floor(Math.random() * 3) * 48;
 
             this.meteors.push(
@@ -243,7 +262,6 @@ class Grid {
                 }))
 
         }
-
     }
 
 
@@ -277,10 +295,21 @@ function game() {
     const grids = [new Grid()];
     const lifes = new Lifes();
     var score = 0;
+    var toSpawn = true;
+    var testing = true;
 
     function animate() {
 
+        if (score > 300 && toSpawn && !testing) {
+            grids.forEach((grid) => {
+                grid.createMeteors();
+            })
+            toSpawn = false;
+        }
+
         scoreController(score);
+
+
 
         if (player.playerLife > 0) {
             requestAnimationFrame(animate);
@@ -342,13 +371,68 @@ function game() {
                     }
                 })
 
+                /*
+                COLISÕES:
+
+                PRIMEIRA COLISÃO PELA ESQUERDA DIRETO NA NAVE
+                SEGUNDA COLISÃO PELA DIREITA DIRETO NA NAVE
+                TERCEIRA COLISÃO PELA DIREITA DE RASPÃO NA NAVE
+                QUARTA COLISÃO PELA ESQUERDA DE RASPÃO NA NAVE
 
 
-                if (player.image && meteors.position.x + meteors.width >= player.position.x && meteors.position.x <= player.position.x + player.width && meteors.position.y + meteors.height >= player.position.y && meteors.position.y < player.position.y + player.height && !meteors.playerHit) {
-                    grid.meteors.splice(i, 1);
-                    player.playerLife--;
-                    console.log(player.playerLife);
-                    meteors.playerHit = true;
+                */
+
+                if (player.image) {
+                    if (meteors.position.x >= player.position.x
+                        && meteors.position.x <= player.position.x + (player.width / 2)) {
+
+                        if (meteors.position.y + meteors.height >= player.position.y
+                            && meteors.position.y < player.position.y + player.height) {
+                            grid.meteors.splice(i, 1);
+                            player.playerLife--;
+                            console.log(player.playerLife);
+                            meteors.playerHit = true;
+                        }
+
+                    } else if (meteors.position.x + meteors.width <= player.position.x + player.width
+                        && meteors.position.x + meteors.width >= player.position.x + (player.width / 2)) {
+
+                        if (meteors.position.y + meteors.height >= player.position.y
+                            && meteors.position.y < player.position.y + player.height) {
+                            grid.meteors.splice(i, 1);
+                            player.playerLife--;
+                            console.log(player.playerLife);
+                            meteors.playerHit = true;
+                        }
+
+                    } else if (meteors.position.x >= player.position.x + (player.width / 2)
+                        && meteors.position.x <= player.position.x + player.width) {
+
+                        let dist = meteors.position.x - (player.position.x + (player.width / 2));
+
+                        if (meteors.position.y + meteors.height >= player.position.y + (dist * 2)
+                            && meteors.position.y < player.position.y + player.height) {
+                            grid.meteors.splice(i, 1);
+                            player.playerLife--;
+                            console.log(player.playerLife);
+                            meteors.playerHit = true;
+                        }
+
+                    } else if (meteors.position.x + meteors.width >= player.position.x
+                        && meteors.position.x + meteors.width <= player.position.x + (player.width / 2)) {
+
+                        let dist = player.position.x + (player.width / 2) - (meteors.position.x + meteors.width);
+
+                        if (meteors.position.y + meteors.height >= player.position.y + (dist * 2)
+                            && meteors.position.y < player.position.y + player.height) {
+                            grid.meteors.splice(i, 1);
+                            player.playerLife--;
+                            console.log(player.playerLife);
+                            meteors.playerHit = true;
+                        }
+                    }
+
+
                 }
 
             })
@@ -384,6 +468,10 @@ function game() {
         }
 
         console.log(player.position.y, player.image.height, canvas.height);
+    }
+
+    function transition() {
+
     }
 
 
@@ -434,27 +522,35 @@ window.addEventListener('keydown', (e) => {
     switch (e.key) {
         case 'ArrowUp':
         case 'w':
-            keys.ArrowUp.pressed = true;
+            if (!testing) {
+                keys.ArrowUp.pressed = true;
+            }
             //lastKeyDown = 'ArrowUp';
             break;
         case 'ArrowLeft':
         case 'a':
-            keys.ArrowLeft.pressed = true;
+            if (!testing) {
+                keys.ArrowLeft.pressed = true;
+            }
             //lastKeyDown = 'ArrowLeft';
             break;
         case 'ArrowRight':
         case 'd':
-            keys.ArrowRight.pressed = true;
+            if (!testing) {
+                keys.ArrowRight.pressed = true;
+            }
             //lastKeyDown = 'ArrowRight';
             break;
         case 'ArrowDown':
         case 's':
-            keys.ArrowDown.pressed = true;
+            if (!testing) {
+                keys.ArrowDown.pressed = true;
+            }
             //lastKeyDown = 'ArrowDown';
             break;
         case 'Control':
         case ' ':
-            if (canShot) {
+            if (canShot && !testing) {
                 if (tiro == 0) {
                     projectiles.push(new Projectile({
                         position: {
@@ -468,7 +564,7 @@ window.addEventListener('keydown', (e) => {
                     }))
 
                     tiro += 1;
-                } else {
+                } else if (!canShot && !testing) {
                     projectiles.push(new Projectile({
                         position: {
                             x: player.position.x + player.width - 12,

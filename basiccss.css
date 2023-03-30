@@ -7,8 +7,13 @@
     font-size: 85%;
 }
 
+.game-cnv{
+    align-self: center;
+}
+
 .core-ws{
     background-color: black;
+    align-self: center;
 }
 
 #game-div {
@@ -18,12 +23,11 @@
 }
 
 #score-div {
-    display: flex;
-    position: relative;
+    position: absolute;
     display: inline;
     flex-direction: column;
+    align-self: flex-end;
     align-content: flex-end;
-    bottom: 5vh;
     right: 5px;
 }
 

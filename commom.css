@@ -122,6 +122,10 @@ a.link {
 
 .core-ws{
     background-color: #1e2122;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
 }
 
 #gm-btn {

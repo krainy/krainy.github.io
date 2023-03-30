@@ -11,19 +11,17 @@ console.log(ctx)
 
 
 function resizeGameDiv() {
-    var gameDiv = document.getElementById("core-div");
+    var mainDiv = document.getElementById("core-div");
     var header = document.getElementById("header").offsetHeight;
     var footer = document.getElementById("footer").offsetHeight;
     var windowHeight = window.innerHeight;
 
     var calcHeight = windowHeight - header - footer;
 
-    gameDiv.style.height = calcHeight + "px";
-    canvas.height = gameDiv.offsetHeight;
-    canvas.width = gameDiv.offsetWidth;
+    mainDiv.style.height = calcHeight + "px";
+    mainDiv.offsetHeight > 800 ? canvas.height = 800 : canvas.height = mainDiv.offsetHeight;
 }
 
-resizeGameDiv();
 console.log("width: " + canvas.width + " height: " + canvas.height);
 
 ctx.webkitImageSmoothingEnabled = false;
